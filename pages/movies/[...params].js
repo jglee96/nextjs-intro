@@ -3,8 +3,7 @@ import Seo from "../../components/Seo";
 
 export default function Detail({ params }) {
   const router = useRouter();
-  const [title, id] = params || [];
-  console.log(router);
+  const [title, id] = params || router.query.params || [];
   return (
     <div>
       <Seo title={title} />
@@ -13,8 +12,8 @@ export default function Detail({ params }) {
   );
 }
 
-export function getServerSideProps({ params: { params } }) {
-  return {
-    props: { params },
-  };
-}
+// export function getServerSideProps({ params: { params } }) {
+//   return {
+//     props: { params },
+//   };
+// }

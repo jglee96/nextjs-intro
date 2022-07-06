@@ -6,6 +6,14 @@ import Seo from "../components/Seo";
 const API_KEY = "4dfd9fb7b538e9c006fd0572377194e9";
 
 export default function Home({ results }) {
+  const [movies, setMovies] = useState([]);
+  useEffect(() => {
+    (async () => {
+      const { results } = await (await fetch(`/api/movies`)).json();
+      setMovies(results);
+    })();
+  }, []);
+
   const router = useRouter();
   const onClick = (id, title) => {
     router.push(`/movies/${title}/${id}`);
@@ -13,7 +21,8 @@ export default function Home({ results }) {
   return (
     <div>
       <Seo title="Home" />
-      {results?.map((movie) => (
+      {movies.length === 0 && <h4>Loading...</h4>}
+      {movies?.map((movie) => (
         <div
           onClick={() => onClick(movie.id, movie.original_title)}
           className="movie"
@@ -55,13 +64,13 @@ export default function Home({ results }) {
   );
 }
 
-export async function getServerSideProps() {
-  const { results } = await (
-    await fetch(`http://localhost:3000/api/movies`)
-  ).json();
-  return {
-    props: {
-      results,
-    },
-  };
-}
+// export async function getServerSideProps() {
+//   const { results } = await (
+//     await fetch(`http://localhost:3000/api/movies`)
+//   ).json();
+//   return {
+//     props: {
+//       results,
+//     },
+//   };
+// }
